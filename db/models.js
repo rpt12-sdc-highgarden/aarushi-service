@@ -57,16 +57,41 @@ const getBookItemHoverWindow = (bookId, callback) => {
 
 // need to add post, put, delete
 
-// const deleteAuthor = (bookId) => {
-//   const deleteQuery = `DELETE FROM books WHERE id = ${bookId}`;
-//   ORM.sequelize.query(deleteQuery)
-//     .then((results) => {
-//       console.log('deleted book', results);
-//     })
-//     .catch((err) => {
-//       console.log('err in deleting book', err);
-//     });
-// };
+const disableForeignKeyCheck =  () => {
+  const disableQuery = 'SET FOREIGN_KEY_CHECKS=0;';
+  ORM.sequelize.query(disableQuery)
+    .then((results) => {
+      console.log('disabled foreignKeyCheck', results);
+    })
+    .catch((err) => {
+      console.log('error in disabling foreignKeyCheck', err);
+    });
+};
+
+const enableForeignKeyCheck =  () => {
+  const enableQuery = 'SET FOREIGN_KEY_CHECKS=1;';
+  ORM.sequelize.query(enableQuery)
+    .then((results) => {
+      console.log('enabling foreignKeyCheck', results);
+    })
+    .catch((err) => {
+      console.log('error in enabling foreignKeyCheck', err);
+    });
+};
+
+const deleteAuthor = (bookId) => {
+  // const deleteQuery = `DELETE FROM books WHERE id = ${bookId}`;
+  disableForeignKeyCheck();
+  const deleteQuery = `DELETE FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
+  ORM.sequelize.query(deleteQuery)
+    .then((results) => {
+      console.log('deleted book', results);
+    })
+    .catch((err) => {
+      console.log('err in deleting book', err);
+    });
+  enableForeignKeyCheck();
+};
 
 const addAuthor = () => {
   const createFakeAuthor = () => ({
