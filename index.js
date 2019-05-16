@@ -27,14 +27,18 @@ app.get('/author/:id', (req, res) => {
   });
 });
 
-//CRUD-API - adding post, put, delete methods
+//  CRUD-API - adding post, put, delete methods
 
-// app.post('/author/:id', (req, res) {
-//   const bookId = req.params.id;
+app.put('/author/:id', (req, res) => {
+  const bookId = req.params.id;
+  console.log(bookId);
+  db.addFollowers(bookId, (err, results) => {
+    if (err) { throw err; }
+  });
+});
 
-// });
 
-app.post('/author', (req, res) => {
+app.post('/author/:id', (req, res) => {
   db.addAuthor((err, results) => {
     if (err) { throw err; }
     else {

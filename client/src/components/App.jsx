@@ -16,6 +16,21 @@ class App extends React.Component {
     };
 
     this.getInfo = this.getInfo.bind(this);
+    this.followAuthor = this.followAuthor.bind(this);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  followAuthor() {
+    const id = Number(window.location.pathname.split('/')[1]) || 1;
+    console.log('id', id);
+    $.ajax({
+      url: `http://localhost:3002/author/${id}`,
+      method: 'PUT',
+      success: (results) => {
+        console.log(results);
+      },
+    });
+    location.reload();
   }
 
   getInfo() {
@@ -42,7 +57,7 @@ class App extends React.Component {
     return (
       <div>
         <AboutAuthorHeader name={this.state.authorInfo.name}></AboutAuthorHeader>
-        <AuthorName pic={this.state.authorInfo.author_image} name={this.state.authorInfo.name} followers={this.state.authorInfo.followers}></AuthorName>
+        <AuthorName onClick={this.followAuthor} pic={this.state.authorInfo.author_image} name={this.state.authorInfo.name} followers={this.state.authorInfo.followers}></AuthorName>
         <Biography name={this.state.authorInfo.name} bio={this.state.authorInfo.biography}></Biography>
         <BooksBy name={this.state.authorInfo.name}></BooksBy>
         <div>

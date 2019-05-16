@@ -59,7 +59,7 @@ class AuthorName extends React.Component {
       <br></br>
       <Name>{this.props.name}</Name>
       <Followers>{this.props.followers} followers</Followers>
-      <Button>Follow Author</Button>
+      <Button onClick={this.props.onClick}>Follow Author</Button>
       </div>
       </Wrapper>
 

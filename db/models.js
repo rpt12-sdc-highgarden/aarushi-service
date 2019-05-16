@@ -57,7 +57,7 @@ const getBookItemHoverWindow = (bookId, callback) => {
 
 // need to add post, put, delete
 
-const disableForeignKeyCheck =  () => {
+const disableForeignKeyCheck = () => {
   const disableQuery = 'SET FOREIGN_KEY_CHECKS=0;';
   ORM.sequelize.query(disableQuery)
     .then((results) => {
@@ -68,7 +68,7 @@ const disableForeignKeyCheck =  () => {
     });
 };
 
-const enableForeignKeyCheck =  () => {
+const enableForeignKeyCheck = () => {
   const enableQuery = 'SET FOREIGN_KEY_CHECKS=1;';
   ORM.sequelize.query(enableQuery)
     .then((results) => {
@@ -107,8 +107,19 @@ const addAuthor = () => {
     .then((results) => {
       console.log('added author', results);
     })
-    .then((err) => {
+    .catch((err) => {
       console.log('err in adding author', err);
+    });
+};
+
+const addFollowers = (bookId) => {
+  const addFollowersQuery = `UPDATE authors SET followers = followers + 1 WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
+  ORM.sequelize.query(addFollowersQuery)
+    .then((results) => {
+      console.log('added followers', results);
+    })
+    .catch((err) => {
+      console.log('err in adding follower', err);
     });
 };
 
@@ -117,3 +128,4 @@ exports.getFiveBooks = getFiveBooks;
 exports.getBookItemHoverWindow = getBookItemHoverWindow;
 exports.deleteAuthor = deleteAuthor;
 exports.addAuthor = addAuthor;
+exports.addFollowers = addFollowers;
