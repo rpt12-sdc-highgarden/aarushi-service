@@ -1,4 +1,6 @@
+const faker = require('faker');
 const ORM = require('./index.js');
+
 
 const getFiveBooks = (authorId, callback) => {
   const fiveBooksQuery = `SELECT title FROM books WHERE author_id = ${authorId} ORDER BY average_rating LIMIT 5`;
@@ -53,6 +55,40 @@ const getBookItemHoverWindow = (bookId, callback) => {
     });
 };
 
+// need to add post, put, delete
+
+// const deleteAuthor = (bookId) => {
+//   const deleteQuery = `DELETE FROM books WHERE id = ${bookId}`;
+//   ORM.sequelize.query(deleteQuery)
+//     .then((results) => {
+//       console.log('deleted book', results);
+//     })
+//     .catch((err) => {
+//       console.log('err in deleting book', err);
+//     });
+// };
+
+const addAuthor = () => {
+  const createFakeAuthor = () => ({
+    name: faker.name.findName(),
+    followers: faker.random.number(),
+    biography: faker.lorem.paragraph(),
+    author_image: faker.image.people(),
+  });
+
+  const author = createFakeAuthor();
+  const addQuery = `INSERT INTO authors (name, followers, biography, author_image, createdAt, updatedAt) VALUES ("${author.name}", ${author.followers}, "${author.biography}", "${author.author_image}", ${CURDATE()}, ${CURDATE()}`;
+  ORM.sequelize.query(addQuery)
+    .then((results) => {
+      console.log('added author', results);
+    })
+    .then((err) => {
+      console.log('err in adding author', err);
+    });
+};
+
 exports.getAuthorInfo = getAuthorInfo;
 exports.getFiveBooks = getFiveBooks;
 exports.getBookItemHoverWindow = getBookItemHoverWindow;
+exports.deleteAuthor = deleteAuthor;
+exports.addAuthor = addAuthor;
