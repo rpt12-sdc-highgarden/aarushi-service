@@ -90,4 +90,18 @@ of ratings, the average rating, the year of publication, and a description of th
 }
 
 ```
-# New Document
+## CRUD
+**CREATE:** 
+**Method:** post
+**URL:** /author/:id
+**Description:** This operations creates a new random author with a createdAt and updatedAt date/time that matches the date/time of creation. 
+
+**CREATE:** 
+**Method:** put
+**URL:** /author/:id
+**Description:** This operations adds a follower to an author when a user clicks on the "Follow Author" button. 
+
+**CREATE:** 
+**Method:** delete
+**URL:** /author/:id
+**Description:** This operation deletes an author. 
