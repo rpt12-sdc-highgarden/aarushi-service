@@ -28,19 +28,20 @@ app.get('/author/:id', (req, res) => {
 });
 
 app.put('/author/:id', (req, res) => {
+  console.log(req.body);
   const bookId = req.params.id;
   console.log(bookId);
   db.addFollowers(bookId, (err, results) => {
     if (err) { throw err; }
-    res.send(results);
+    res.send(200);
   });
 });
 
 
-app.post('/author/:id', (req, res) => {
+app.post('/author', (req, res) => {
   db.addAuthor((err, results) => {
     if (err) { throw err; }
-    res.send(results);
+    res.send(200);
   });
 });
 
@@ -48,7 +49,7 @@ app.delete('/author/:id', (req, res) => {
   const bookId = req.params.id;
   db.deleteAuthor(bookId, (err, results) => {
     if (err) { throw err; }
-    res.send(results);
+    res.send(200);
   });
 });
 

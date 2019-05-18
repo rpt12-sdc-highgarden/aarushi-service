@@ -93,7 +93,7 @@ of ratings, the average rating, the year of publication, and a description of th
 ## CRUD
 **CREATE AUTHOR:** <br>
 **Method:** post <br>
-**Endpoint:** /author/:id <br>
+**Endpoint:** /author<br>
 **Description:** This operations creates a new random author with a createdAt and updatedAt date/time that matches the date/time of creation. <br>
 <br><br>
 **UPDATE FOLLOWERS:** <br>
