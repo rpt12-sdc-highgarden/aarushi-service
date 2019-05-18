@@ -34,6 +34,7 @@ app.put('/author/:id', (req, res) => {
   console.log(bookId);
   db.addFollowers(bookId, (err, results) => {
     if (err) { throw err; }
+    res.send(results);
   });
 });
 
@@ -41,9 +42,7 @@ app.put('/author/:id', (req, res) => {
 app.post('/author/:id', (req, res) => {
   db.addAuthor((err, results) => {
     if (err) { throw err; }
-    else {
-      console.log('adding author', results);
-    }
+    res.send(results);
   });
 });
 
@@ -51,9 +50,7 @@ app.delete('/author/:id', (req, res) => {
   const bookId = req.params.id;
   db.deleteAuthor(bookId, (err, results) => {
     if (err) { throw err; }
-    else {
-      console.log('deleted book', results);
-    }
+    res.send(results);
   });
 });
 

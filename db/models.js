@@ -102,7 +102,7 @@ const addAuthor = () => {
   });
 
   const author = createFakeAuthor();
-  const addQuery = `INSERT INTO authors (name, followers, biography, author_image, createdAt, updatedAt) VALUES ("${author.name}", ${author.followers}, "${author.biography}", "${author.author_image}", ${CURDATE()}, ${CURDATE()}`;
+  const addQuery = `INSERT INTO authors (name, followers, biography, author_image, createdAt, updatedAt) VALUES ("${author.name}", ${author.followers}, "${author.biography}", "${author.author_image}", CURDATE(), CURDATE()`;
   ORM.sequelize.query(addQuery)
     .then((results) => {
       console.log('added author', results);
