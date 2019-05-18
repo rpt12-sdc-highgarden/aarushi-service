@@ -55,8 +55,6 @@ const getBookItemHoverWindow = (bookId, callback) => {
     });
 };
 
-// need to add post, put, delete
-
 const disableForeignKeyCheck = () => {
   const disableQuery = 'SET FOREIGN_KEY_CHECKS=0;';
   ORM.sequelize.query(disableQuery)
@@ -80,7 +78,6 @@ const enableForeignKeyCheck = () => {
 };
 
 const deleteAuthor = (bookId) => {
-  // const deleteQuery = `DELETE FROM books WHERE id = ${bookId}`;
   disableForeignKeyCheck();
   const deleteQuery = `DELETE FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
   ORM.sequelize.query(deleteQuery)

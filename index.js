@@ -27,8 +27,6 @@ app.get('/author/:id', (req, res) => {
   });
 });
 
-//  CRUD-API - adding post, put, delete methods
-
 app.put('/author/:id', (req, res) => {
   const bookId = req.params.id;
   console.log(bookId);
