@@ -27,6 +27,32 @@ app.get('/author/:id', (req, res) => {
   });
 });
 
+app.put('/author/:id', (req, res) => {
+  console.log(req.body);
+  const bookId = req.params.id;
+  console.log(bookId);
+  db.addFollowers(bookId, (err, results) => {
+    if (err) { throw err; }
+    res.send(200);
+  });
+});
+
+
+app.post('/author', (req, res) => {
+  db.addAuthor((err, results) => {
+    if (err) { throw err; }
+    res.send(200);
+  });
+});
+
+app.delete('/author/:id', (req, res) => {
+  const id = req.params.id;
+  db.deleteAuthorAndBook(id, (err, results) => {
+    if (err) { throw err; }
+    res.send(200);
+  });
+});
+
 const port = process.env.PORT || 3002;
 
 app.listen(3002, () => {
