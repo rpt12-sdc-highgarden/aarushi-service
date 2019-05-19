@@ -94,12 +94,12 @@ of ratings, the average rating, the year of publication, and a description of th
 **CREATE AUTHOR:** <br>
 **Method:** post <br>
 **Endpoint:** /author<br>
-**Description:** This operations creates a new random author with a createdAt and updatedAt date/time that matches the date of creation. <br>
+**Description:** This operation creates a new random author with a createdAt and updatedAt date/time that matches the date of creation. <br>
 <br><br>
 **UPDATE FOLLOWERS:** <br>
 **Method:** put <br>
 **Endpoint:** /author/:id <br>
-**Description:** This operations adds a follower to an author when a user clicks on the "Follow Author" button. <br>
+**Description:** This operation adds a follower to an author when a user clicks on the "Follow Author" button. <br>
 <br><br>
 **DELETE AUTHOR:** <br>
 **Method:** delete <br>
