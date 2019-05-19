@@ -46,8 +46,8 @@ app.post('/author', (req, res) => {
 });
 
 app.delete('/author/:id', (req, res) => {
-  const bookId = req.params.id;
-  db.deleteAuthor(bookId, (err, results) => {
+  const id = req.params.id;
+  db.deleteAuthorAndBook(id, (err, results) => {
     if (err) { throw err; }
     res.send(200);
   });
