@@ -7,10 +7,9 @@
 
 ## Related Projects
 
-  - https://github.com/rpt12-knightrider/jb-service
-  - https://github.com/rpt12-knightrider/s-service
-  - https://github.com/rpt12-knightrider/mj-service
-  - https://github.com/rpt12-knightrider/sm-service
+  - https://github.com/rpt12-sdc-highgarden/mike-service
+  - https://github.com/rpt12-sdc-highgarden/anait-service
+  - https://github.com/rpt12-sdc-highgarden/alyssa-service
 
 ## Table of Contents
 
@@ -95,13 +94,26 @@ of ratings, the average rating, the year of publication, and a description of th
 **Method:** post <br>
 **Endpoint:** /author<br>
 **Description:** This operation creates a new random author with a createdAt and updatedAt date/time that matches the date of creation. <br>
+**API Response:**<br>
+```
+added author [id of added author in author table, # of added authors (1)]
+```
 <br><br>
 **UPDATE FOLLOWERS:** <br>
 **Method:** put <br>
 **Endpoint:** /author/:id <br>
 **Description:** This operation adds a follower to an author when a user clicks on the "Follow Author" button. <br>
+**API Response:**<br>
+```
+added followers [updated author (object/document)]
+```
 <br><br>
-**DELETE AUTHOR:** <br>
+**DELETE BOOK & AUTHOR:** <br>
 **Method:** delete <br>
 **Endpoint:** /author/:id <br>
 **Description:** This operation deletes an author where the id in the authors table matches the id in the endpoint. <br>
+**API Response:**<br>
+```
+deleted book [deleted book (object/document)]
+delted author [deleted author (object/document)]
+```
