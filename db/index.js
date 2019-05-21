@@ -40,15 +40,15 @@ const Books = sequelize.define('books', {
   cover_image: Sequelize.TEXT,
   author_id: {
     type: Sequelize.INTEGER,
-    references: {
-      model: Authors,
-      key: 'id',
-    },
+    // references: {
+    //   model: Authors,
+    //   key: 'id',
+    // },
   },
 });
 
 // need to add and/or fix associations
-Books.belongsTo(Authors);
+// Books.belongsTo(Authors);
 
 Authors.sync();
 Books.sync();
