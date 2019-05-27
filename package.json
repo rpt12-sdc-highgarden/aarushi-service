@@ -13,7 +13,7 @@
     "start": "nodemon ./index.js",
     "seed": "npx knex seed:run",
     "test": "jest",
-    "fix-memory-limit": "cross-env LIMIT=2048 increase-memory-limit"
+    "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "jest-enzyme",
