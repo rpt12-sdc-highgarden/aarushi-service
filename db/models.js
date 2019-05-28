@@ -27,7 +27,7 @@ const getAuthorInfo = (bookId, callback) => {
       const authorId = results[0].id;
       getFiveBooks(authorId, (err, books) => {
         if (err) { throw err; }
-        ORM.sequelize.query('SELECT title, total_ratings, average_rating, year, description, cover_image FROM books WHERE title IN(:status)',
+        ORM.sequelize.query(`SELECT title, total_ratings, average_rating, year, description, cover_image FROM books WHERE author_id = ${authorId} ORDER BY average_rating DESC LIMIT 5`,
           { replacements: { status: books.titles } },
         ).then((details) => {
           results[0].titles = books.titles;
@@ -54,40 +54,6 @@ const getBookItemHoverWindow = (bookId, callback) => {
       callback(err);
     });
 };
-
-// const disableForeignKeyCheck = () => {
-//   const disableQuery = 'SET FOREIGN_KEY_CHECKS=0;';
-//   ORM.sequelize.query(disableQuery)
-//     .then((results) => {
-//       console.log('disabled foreignKeyCheck', results);
-//     })
-//     .catch((err) => {
-//       console.log('error in disabling foreignKeyCheck', err);
-//     });
-// };
-
-// const enableForeignKeyCheck = () => {
-//   const enableQuery = 'SET FOREIGN_KEY_CHECKS=1;';
-//   ORM.sequelize.query(enableQuery)
-//     .then((results) => {
-//       console.log('enabling foreignKeyCheck', results);
-//     })
-//     .catch((err) => {
-//       console.log('error in enabling foreignKeyCheck', err);
-//     });
-// };
-
-// const deleteAuthor = (bookId) => {
-//   disableForeignKeyCheck();
-//   const deleteQuery = `DELETE FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
-//   ORM.sequelize.query(deleteQuery)
-//     .then((results) => {
-//       console.log('deleted book', results);
-//     })
-//     .catch((err) => {
-//       console.log('err in deleting book', err);
-//     });
-// };
 
 const deleteAuthorAndBook = (id) => {
   const deleteBookQuery = `DELETE FROM books WHERE author_id=${id}`;

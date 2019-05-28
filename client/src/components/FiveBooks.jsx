@@ -125,7 +125,7 @@ class FiveBooks extends React.Component {
     return (
       <div>
         <table>
-          {this.state.details.map((cover, i) => <td data-tip data-for={cover.title}><Image src={cover.cover_image}></Image>
+          {this.state.details.map(cover => <td data-tip data-for={cover.title}><Image src={cover.cover_image}></Image>
             <ToolTip>
               <ReactTooltip id={cover.title} place='bottom' type='light' data-multiline='true' border='true' effect='solid' clickable={true}>
                 <span><Title>{cover.title}</Title><br></br>

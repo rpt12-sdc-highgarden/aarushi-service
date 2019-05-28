@@ -9,15 +9,76 @@ const createFakeAuthors = () => ({
   updatedAt: faker.date.past(),
 });
 
+// exports.seed = (knex) => {
+//   // Deletes ALL existing entries
+//   return knex('authors').del()
+//     .then(() => {
+//       const authors = [];
+//       for (let i = 0; i < 10000; i += 1) {
+//         authors.push(createFakeAuthors());
+//       }
+//       return knex('authors').insert(authors)
+//         .then(() => {
+//           const authors1 = [];
+//           for (let i = 0; i < 10000; i += 1) {
+//             authors1.push(createFakeAuthors());
+//           }
+//           return knex('authors').insert(authors1);
+//         });
+//     });
+// };
+
+const createAllFakeAuthors = (numberAuthors) => {
+  const arrayAuthors = [];
+  let i = 0;
+  for (i; i < numberAuthors; i += 1) {
+    arrayAuthors.push(createFakeAuthors());
+  }
+  return arrayAuthors;
+};
+
+// const allAuthors = createAllFakeAuthors(1000000);
+
 exports.seed = (knex) => {
-  // Deletes ALL existing entries
   return knex('authors').del()
     .then(() => {
-      const authors = [];
-      const desiredAuthors = 100;
-      for (let i = 0; i < desiredAuthors; i += 1) {
-        authors.push(createFakeAuthors());
-      }
-      return knex('authors').insert(authors);
+      return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+        .then(() => {
+          return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+            .then(() => {
+              return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                .then(() => {
+                  return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                    .then(() => {
+                      return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                        .then(() => {
+                          return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                            .then(() => {
+                              return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                                .then(() => {
+                                  return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                                    .then(() => {
+                                      return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                                        .then(() => {
+                                          return knex.batchInsert('authors', createAllFakeAuthors(1000000), 1000)
+                                            .catch(err => console.log(err));
+                                        })
+                                        .catch(err => console.log(err));
+                                    })
+                                    .catch(err => console.log(err));
+                                })
+                                .catch(err => console.log(err));
+                            })
+                            .catch(err => console.log(err));
+                        })
+                        .catch(err => console.log(err));
+                    })
+                    .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
     });
 };

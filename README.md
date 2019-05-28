@@ -7,10 +7,9 @@
 
 ## Related Projects
 
-  - https://github.com/rpt12-knightrider/jb-service
-  - https://github.com/rpt12-knightrider/s-service
-  - https://github.com/rpt12-knightrider/mj-service
-  - https://github.com/rpt12-knightrider/sm-service
+  - https://github.com/rpt12-sdc-highgarden/mike-service
+  - https://github.com/rpt12-sdc-highgarden/anait-service
+  - https://github.com/rpt12-sdc-highgarden/alyssa-service
 
 ## Table of Contents
 
