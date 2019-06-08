@@ -28,5 +28,5 @@ dist/
 .env
 
 # licence key
-newrelic_licence.js
+newrelic_license.js
 
