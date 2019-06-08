@@ -1,4 +1,4 @@
-const licenseKey = require('./newrelic_license.js/index.js');
+const licenseKey = require('./newrelic_license_key.js');
 
 'use strict'
 /**
