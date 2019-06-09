@@ -1,20 +1,19 @@
 config:
   target: "http://localhost:3002"
   http:
-    pool: 100000
+    pool: 10
   phases:
     - duration: 60
-      arrivalRate: 1
+      arrivalRate: 3
 scenarios:
   - name: "get"
     flow:
       - loop: 
         - get:
             url: "/author/{{ $randomNumber(9999000, 10000000) }}"
-        count: 10000
+        count: 500
   - name: "post"
     flow: 
-      - loop: 
-        - post:
-            url: "/author"
-        count: 10000
+      - post:
+          url: "/author"
+
