@@ -6,6 +6,7 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 const db = require('./db/models.js');
+const pool = require('./db/index.js');
 
 
 app.use(express.static(path.join(__dirname, './client/public')));

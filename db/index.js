@@ -1,3 +1,5 @@
+/*
+//using sequelize, going to try pure mysql
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
@@ -47,8 +49,6 @@ const Books = sequelize.define('books', {
   },
 });
 
-// need to add and/or fix associations
-// Books.belongsTo(Authors);
 
 Authors.sync();
 Books.sync();
@@ -56,3 +56,32 @@ Books.sync();
 exports.Authors = Authors;
 exports.Books = Books;
 exports.sequelize = sequelize;
+*/
+
+const mysql = require('mysql');
+
+const pool = mysql.createPool({
+  connectionLimit: 7,
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'goodreads',
+});
+
+pool.query('CREATE TABLE IF NOT EXISTS authors (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), followers INT, biography TEXT, author_image VARCHAR(40))', (error, results) => {
+  if (error) {
+    console.log('error in creating authors table', error);
+  } else {
+    console.log('authors table created', results);
+  }
+});
+
+pool.query('CREATE TABLE IF NOT EXISTS books (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(50), year INT, total_ratings INT, average_rating DECIMAL, description TEXT, cover_image TEXT, author_ID INT NOT NULL)', (error, results) => {
+  if (error) {
+    console.log('error in creating books table', error);
+  } else {
+    console.log('books table created', results);
+  }
+});
+
+module.exports = pool;
