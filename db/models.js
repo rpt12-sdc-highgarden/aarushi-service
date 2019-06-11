@@ -1,29 +1,29 @@
 const faker = require('faker');
-// const ORM = require('./index.js');
+const ORM = require('./index.js');
 const pool = require('./index.js');
 
 
-// const getFiveBooks = (authorId, callback) => {
-//   const fiveBooksQuery = `SELECT title FROM books WHERE author_id = ${authorId} ORDER BY average_rating LIMIT 5`;
-//   ORM.sequelize.query(fiveBooksQuery)
-//     .then(([results]) => {
-//       // separate out as its own function, then able to test its output
-//       const fiveBooks = {};
-//       fiveBooks.titles = [];
-//       for (let i = 0; i < results.length; i += 1) {
-//         fiveBooks.titles.push(results[i].title);
-//       }
-//       callback(null, fiveBooks);
-//     })
-//     .catch((err) => {
-//       console.log('err', err);
-//       callback(err);
-//     });
-// };
-
-const getAuthorInfo = (bookId, callback) => {
-  pool.query(`SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`);
+const getFiveBooks = (authorId, callback) => {
+  const fiveBooksQuery = `SELECT title FROM books WHERE author_id = ${authorId} ORDER BY average_rating LIMIT 5`;
+  ORM.sequelize.query(fiveBooksQuery)
+    .then(([results]) => {
+      // separate out as its own function, then able to test its output
+      const fiveBooks = {};
+      fiveBooks.titles = [];
+      for (let i = 0; i < results.length; i += 1) {
+        fiveBooks.titles.push(results[i].title);
+      }
+      callback(null, fiveBooks);
+    })
+    .catch((err) => {
+      console.log('err', err);
+      callback(err);
+    });
 };
+
+// const getAuthorInfo = (bookId, callback) => {
+//   pool.query(`SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`);
+// };
 
 // const getAuthorInfo = (bookId, callback) => {
 //   const authorQuery = `SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
