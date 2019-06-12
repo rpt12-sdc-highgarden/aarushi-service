@@ -96,39 +96,39 @@ const getAuthorInfo = (bookId, callback) => {
 //     .catch(err => console.log('error in deleting book', err));
 // };
 
-// const addAuthor = () => {
-const createFakeAuthor = () => ({
-  name: faker.name.findName(),
-  followers: faker.random.number(),
-  biography: faker.lorem.paragraph(),
-  author_image: faker.image.people(),
-});
+const addAuthor = () => {
+  const createFakeAuthor = () => ({
+    name: faker.name.findName(),
+    followers: faker.random.number(),
+    biography: faker.lorem.paragraph(),
+    author_image: faker.image.people(),
+  });
 
-//   const author = createFakeAuthor();
-//   const addQuery = `INSERT INTO authors (name, followers, biography, author_image, createdAt, updatedAt) VALUES ("${author.name}", ${author.followers}, "${author.biography}", "${author.author_image}", CURDATE(), CURDATE())`;
-//   ORM.sequelize.query(addQuery)
-//     .then((results) => {
-//       console.log('added author', results);
-//     })
-//     .catch((err) => {
-//       console.log('err in adding author', err);
-//     });
-// };
+  const author = createFakeAuthor();
+  const addQuery = `INSERT INTO authors (name, followers, biography, author_image) VALUES ("${author.name}",${author.followers},"${author.biography}","${author.author_image}");`;
+  pool.query(addQuery, (err, results) => {
+    if (err) {
+      console.log('error in adding author', err);
+    } else {
+      console.log('added author', results);
+    }
+  });
+};
 
-// const addFollowers = (bookId) => {
-//   const addFollowersQuery = `UPDATE authors SET followers = followers + 1 WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
-//   ORM.sequelize.query(addFollowersQuery)
-//     .then((results) => {
-//       console.log('added followers', results);
-//     })
-//     .catch((err) => {
-//       console.log('err in adding follower', err);
-//     });
-// };
+const addFollowers = (bookId) => {
+  const addFollowersQuery = `UPDATE authors SET followers = followers + 1 WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
+  pool.query(addFollowersQuery, (err, results) => {
+    if (err) {
+      console.log('error in adding follower, err');
+    } else {
+      console.log('added follower', results);
+    }
+  });
+};
 
 exports.getAuthorInfo = getAuthorInfo;
 // exports.getFiveBooks = getFiveBooks;
 // exports.getBookItemHoverWindow = getBookItemHoverWindow;
 // exports.deleteAuthorAndBook = deleteAuthorAndBook;
-// exports.addAuthor = addAuthor;
-// exports.addFollowers = addFollowers;
+exports.addAuthor = addAuthor;
+exports.addFollowers = addFollowers;
