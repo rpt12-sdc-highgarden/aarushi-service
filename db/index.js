@@ -61,11 +61,27 @@ exports.sequelize = sequelize;
 const mysql = require('mysql');
 
 const pool = mysql.createPool({
-  connectionLimit: 7,
+  connectionLimit: 10,
+  acquireTimeout: 1000000,
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'goodreads',
+});
+
+pool.getConnection((err, connection) => {
+  if (err) {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.error('Database connection was closed.');
+    }
+    if (err.code === 'ER_CON_COUNT_ERROR') {
+      console.error('Database has too many connections.');
+    }
+    if (err.code === 'ECONNREFUSED') {
+      console.error('Database connection was refused.');
+    }
+  }
+  if (connection) connection.release();
 });
 
 pool.query('CREATE TABLE IF NOT EXISTS authors (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), followers INT, biography TEXT, author_image VARCHAR(40))', (error, results) => {
