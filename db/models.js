@@ -3,27 +3,48 @@ const ORM = require('./index.js');
 const pool = require('./index.js');
 
 
-const getFiveBooks = (authorId, callback) => {
-  const fiveBooksQuery = `SELECT title FROM books WHERE author_id = ${authorId} ORDER BY average_rating LIMIT 5`;
-  ORM.sequelize.query(fiveBooksQuery)
-    .then(([results]) => {
-      // separate out as its own function, then able to test its output
-      const fiveBooks = {};
-      fiveBooks.titles = [];
-      for (let i = 0; i < results.length; i += 1) {
-        fiveBooks.titles.push(results[i].title);
-      }
-      callback(null, fiveBooks);
-    })
-    .catch((err) => {
-      console.log('err', err);
-      callback(err);
-    });
-};
-
-// const getAuthorInfo = (bookId, callback) => {
-//   pool.query(`SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`);
+// const getFiveBooks = (authorId, callback) => {
+//   const fiveBooksQuery = `SELECT title FROM books WHERE author_id = ${authorId} ORDER BY average_rating LIMIT 5`;
+//   ORM.sequelize.query(fiveBooksQuery)
+//     .then(([results]) => {
+//       // separate out as its own function, then able to test its output
+//       const fiveBooks = {};
+//       fiveBooks.titles = [];
+//       for (let i = 0; i < results.length; i += 1) {
+//         fiveBooks.titles.push(results[i].title);
+//       }
+//       callback(null, fiveBooks);
+//     })
+//     .catch((err) => {
+//       console.log('err', err);
+//       callback(err);
+//     });
 // };
+
+const getAuthorInfo = (bookId, callback) => {
+  pool.query(`SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`, (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      const authorInfo = results[0];
+      const authorId = authorInfo.id;
+      pool.query(`SELECT title, total_ratings, average_rating, year, description, cover_image FROM books WHERE author_id = ${authorId} ORDER BY average_rating DESC LIMIT 5`, (err, resultsBook) => {
+        if (err) {
+          console.log(err);
+        } else {
+          const bookInfo = resultsBook;
+          const titles = [];
+          for (let i = 0; i < bookInfo.length; i += 1) {
+            titles.push(bookInfo[i].title);
+          }
+          authorInfo.titles = titles;
+          authorInfo.bookDetails = bookInfo;
+          callback(null, authorInfo);
+        }
+      });
+    }
+  });
+};
 
 // const getAuthorInfo = (bookId, callback) => {
 //   const authorQuery = `SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
@@ -76,12 +97,12 @@ const getFiveBooks = (authorId, callback) => {
 // };
 
 // const addAuthor = () => {
-//   const createFakeAuthor = () => ({
-//     name: faker.name.findName(),
-//     followers: faker.random.number(),
-//     biography: faker.lorem.paragraph(),
-//     author_image: faker.image.people(),
-//   });
+const createFakeAuthor = () => ({
+  name: faker.name.findName(),
+  followers: faker.random.number(),
+  biography: faker.lorem.paragraph(),
+  author_image: faker.image.people(),
+});
 
 //   const author = createFakeAuthor();
 //   const addQuery = `INSERT INTO authors (name, followers, biography, author_image, createdAt, updatedAt) VALUES ("${author.name}", ${author.followers}, "${author.biography}", "${author.author_image}", CURDATE(), CURDATE())`;
