@@ -22,8 +22,9 @@
 ### Initial Setup
 Complete these two steps ONCE before starting the application for the first time:
 1.  `npm install -g webpack` to install webpack globally.
-1. `npm install` to install dependencies.
-2. `npm run create-db` to create MySql database for the application.
+2. `npm install` to install dependencies.
+3. `npm run create-db-mysql` to create MySql database for the application.
+4. `npm run create-index` to create index on the Books table.
 
 ### Regular Usage
 To start the application, Please run the following "package.json" scripts:<br>

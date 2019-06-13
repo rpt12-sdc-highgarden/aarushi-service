@@ -1,73 +1,48 @@
 const faker = require('faker');
-const ORM = require('./index.js');
-
-
-const getFiveBooks = (authorId, callback) => {
-  const fiveBooksQuery = `SELECT title FROM books WHERE author_id = ${authorId} ORDER BY average_rating LIMIT 5`;
-  ORM.sequelize.query(fiveBooksQuery)
-    .then(([results]) => {
-      // separate out as its own function, then able to test its output
-      const fiveBooks = {};
-      fiveBooks.titles = [];
-      for (let i = 0; i < results.length; i += 1) {
-        fiveBooks.titles.push(results[i].title);
-      }
-      callback(null, fiveBooks);
-    })
-    .catch((err) => {
-      console.log('err', err);
-      callback(err);
-    });
-};
+const pool = require('./index.js');
 
 const getAuthorInfo = (bookId, callback) => {
-  const authorQuery = `SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
-  ORM.sequelize.query(authorQuery)
-    .then(([results]) => {
-      const authorId = results[0].id;
-      getFiveBooks(authorId, (err, books) => {
-        if (err) { throw err; }
-        ORM.sequelize.query(`SELECT title, total_ratings, average_rating, year, description, cover_image FROM books WHERE author_id = ${authorId} ORDER BY average_rating DESC LIMIT 5`,
-          { replacements: { status: books.titles } },
-        ).then((details) => {
-          results[0].titles = books.titles;
-          results[0].bookDetails = details[0];
-          callback(null, results[0]);
-        })
+  pool.query(`SELECT id, name, followers, biography, author_image FROM authors WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`, (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      const authorInfo = results[0];
+      const authorId = authorInfo.id;
+      pool.query(`SELECT title, total_ratings, average_rating, year, description, cover_image FROM books WHERE author_id = ${authorId} ORDER BY average_rating DESC LIMIT 5`, (err, resultsBook) => {
+        if (err) {
+          console.log(err);
+        } else {
+          const bookInfo = resultsBook;
+          const titles = [];
+          for (let i = 0; i < bookInfo.length; i += 1) {
+            titles.push(bookInfo[i].title);
+          }
+          authorInfo.titles = titles;
+          authorInfo.bookDetails = bookInfo;
+          callback(null, authorInfo);
+        }
       });
-    })
-    .catch((err) => {
-      console.log('err', err);
-      callback(err);
-    });
-};
-
-// can probably delete this function as it's no longer needed
-const getBookItemHoverWindow = (bookId, callback) => {
-  const bookQuery = `SELECT title, total_ratings, average_rating, year, description FROM books WHERE id = ${bookId}`;
-  ORM.sequelize.query(bookQuery)
-    .then(([results]) => {
-      callback(null, results[0]);
-    })
-    .catch((err) => {
-      console.log('err', err);
-      callback(err);
-    });
+    }
+  });
 };
 
 const deleteAuthorAndBook = (id) => {
   const deleteBookQuery = `DELETE FROM books WHERE author_id=${id}`;
   const deleteAuthorQuery = `DELETE FROM authors WHERE id=${id}`;
-  ORM.sequelize.query(deleteBookQuery)
-    .then((results) => {
+  pool.query(deleteBookQuery, (err, results) => {
+    if (err) {
+      console.log('err in deleting book', err);
+    } else {
       console.log('deleted book', results);
-      return ORM.sequelize.query(deleteAuthorQuery)
-        .then((authorResults) => {
-          console.log('deleted author', authorResults);
-        })
-        .catch(err => console.log('error in deleting author', err));
-    })
-    .catch(err => console.log('error in deleting book', err));
+      pool.query(deleteAuthorQuery, (err2, results2) => {
+        if (err) {
+          console.log('err in deleting author', err2);
+        } else {
+          console.log('deleted author', results2)
+        }
+      });
+    }
+  });
 };
 
 const addAuthor = () => {
@@ -79,30 +54,28 @@ const addAuthor = () => {
   });
 
   const author = createFakeAuthor();
-  const addQuery = `INSERT INTO authors (name, followers, biography, author_image, createdAt, updatedAt) VALUES ("${author.name}", ${author.followers}, "${author.biography}", "${author.author_image}", CURDATE(), CURDATE())`;
-  ORM.sequelize.query(addQuery)
-    .then((results) => {
+  const addQuery = `INSERT INTO authors (name, followers, biography, author_image) VALUES ("${author.name}",${author.followers},"${author.biography}","${author.author_image}");`;
+  pool.query(addQuery, (err, results) => {
+    if (err) {
+      console.log('error in adding author', err);
+    } else {
       console.log('added author', results);
-    })
-    .catch((err) => {
-      console.log('err in adding author', err);
-    });
+    }
+  });
 };
 
 const addFollowers = (bookId) => {
   const addFollowersQuery = `UPDATE authors SET followers = followers + 1 WHERE id IN (SELECT author_id FROM books WHERE id = ${bookId})`;
-  ORM.sequelize.query(addFollowersQuery)
-    .then((results) => {
-      console.log('added followers', results);
-    })
-    .catch((err) => {
-      console.log('err in adding follower', err);
-    });
+  pool.query(addFollowersQuery, (err, results) => {
+    if (err) {
+      console.log('error in adding follower, err');
+    } else {
+      console.log('added follower', results);
+    }
+  });
 };
 
 exports.getAuthorInfo = getAuthorInfo;
-exports.getFiveBooks = getFiveBooks;
-exports.getBookItemHoverWindow = getBookItemHoverWindow;
 exports.deleteAuthorAndBook = deleteAuthorAndBook;
 exports.addAuthor = addAuthor;
 exports.addFollowers = addFollowers;
