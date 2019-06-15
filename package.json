@@ -14,8 +14,8 @@
     "seed": "npx knex seed:run",
     "test": "jest",
     "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit",
-    "create-db-mysql": "mysql -u root -p < /Users/aarushisharma/Desktop/aarushi-service/db/db_creation.sql",
-    "create-index": "mysql -u root -p < /Users/aarushisharma/Desktop/aarushi-service/db/create-index.sql"
+    "create-db-mysql": "mysql -u root -p < ./db/db_creation.sql",
+    "create-index": "mysql -u root -p < ./db/create-index.sql"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "jest-enzyme",
