@@ -19,6 +19,7 @@ const getAuthorInfo = (bookId, callback) => {
           }
           authorInfo.titles = titles;
           authorInfo.bookDetails = bookInfo;
+          console.log(authorInfo);
           callback(null, authorInfo);
         }
       });

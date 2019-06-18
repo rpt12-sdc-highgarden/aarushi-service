@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 const pool = mysql.createPool({
   connectionLimit: 10,
-  acquireTimeout: 1000000,
+  acquireTimeout: 10000000,
   host: 'localhost',
   user: 'root',
   password: '',

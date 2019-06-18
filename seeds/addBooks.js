@@ -1,5 +1,15 @@
 const faker = require('faker');
 
+const knex = require('knex')({
+  client: 'mysql',
+  connection: {
+    host : 'localhost',
+    user : 'root',
+    password: '',
+    database : 'goodreads'
+  }
+});
+
 const createFakeBooks = () => ({
   title: faker.commerce.productName(),
   year: faker.random.number({ min: 1900, max: 2019 }),
@@ -7,7 +17,7 @@ const createFakeBooks = () => ({
   average_rating: faker.random.number({ min: 1, max: 5 }),
   description: faker.lorem.paragraph(),
   cover_image: faker.image.city(),
-  author_id: faker.random.number({ min: 1, max: 10000000 }),
+  author_id: faker.random.number({ min: 1, max: 1000000 }),
   // createdAt: faker.date.past(),
   // updatedAt: faker.date.past(),
 });
@@ -37,7 +47,51 @@ const createAllFakeBooks = (numberBooks) => {
 
 // const allBooks = createAllFakeBooks(1000000);
 
-exports.seed = (knex) => {
+// exports.seed = (knex) => {
+//   return knex('books').del()
+//     .then(() => {
+//       return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//         .then(() => {
+//           return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//             .then(() => {
+//               return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                 .then(() => {
+//                   return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                     .then(() => {
+//                       return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                         .then(() => {
+//                           return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                             .then(() => {
+//                               return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                                 .then(() => {
+//                                   return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                                     .then(() => {
+//                                       return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                                         .then(() => {
+//                                           return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
+//                                             .catch(err => console.log(err));
+//                                         })
+//                                         .catch(err => console.log(err));
+//                                     })
+//                                     .catch(err => console.log(err));
+//                                 })
+//                                 .catch(err => console.log(err));
+//                             })
+//                             .catch(err => console.log(err));
+//                         })
+//                         .catch(err => console.log(err));
+//                     })
+//                     .catch(err => console.log(err));
+//                 })
+//                 .catch(err => console.log(err));
+//             })
+//             .catch(err => console.log(err));
+//         })
+//         .catch(err => console.log(err));
+//     });
+// };
+
+const seedBooks = () => {
   return knex('books').del()
     .then(() => {
       return knex.batchInsert('books', createAllFakeBooks(1000000), 1000)
@@ -80,3 +134,6 @@ exports.seed = (knex) => {
         .catch(err => console.log(err));
     });
 };
+
+
+seedBooks();
