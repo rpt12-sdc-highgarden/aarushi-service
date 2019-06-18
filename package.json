@@ -15,7 +15,9 @@
     "test": "jest",
     "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit",
     "create-db-mysql": "mysql -u root -p < ./db/db_creation.sql",
-    "create-index": "mysql -u root -p < ./db/create-index.sql"
+    "create-index": "mysql -u root -p < ./db/create-index.sql",
+    "seed-authors": "node --max-old-space-size=4096 ./seeds/addAuthors.js",
+    "seed-books": "node --max-old-space-size=4096 ./seeds/addBooks.js"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "jest-enzyme",
